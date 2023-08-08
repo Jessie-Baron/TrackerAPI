@@ -24,8 +24,12 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	/********************
+		GET OPERATIONS
+	 ********************/
 	@GetMapping("/users")
 	public ResponseEntity<?> getUsers(){
+		
 		List<User> users = userService.getAllUsers();
 		
 		return ResponseEntity.status(200).body(users);
@@ -39,6 +43,9 @@ public class UserController {
 		return ResponseEntity.status(200).body(validUser);
 	}
 	
+	/********************
+		POST OPERATIONS
+	 ********************/
 	@PostMapping("/user")
 	public ResponseEntity<?> createUser(@RequestBody User user) throws Exception{
 		
@@ -47,6 +54,9 @@ public class UserController {
 		return ResponseEntity.status(201).body(created);
 	}
 	
+	/********************
+		UPDATE OPERATIONS
+	 ********************/
 	@PatchMapping("/user/{id}") 
 	public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody User user ) throws Exception{
 		
@@ -55,6 +65,9 @@ public class UserController {
 		return ResponseEntity.status(201).body(updated);
 	}
 	
+	/********************
+		DELETE OPERATIONS
+	 ********************/
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable String id) throws Exception{
 		

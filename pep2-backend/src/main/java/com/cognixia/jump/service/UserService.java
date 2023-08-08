@@ -1,15 +1,13 @@
 package com.cognixia.jump.service;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cognixia.jump.exception.ResourceNotFoundException;
+import com.cognixia.jump.exception.UserExistsException;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.User.Role;
 import com.cognixia.jump.repository.UserRepository;
@@ -19,23 +17,34 @@ public class UserService {
 	
 	@Autowired
 	UserRepository userRepo;
+	
+	/********************
+		GET OPERATIONS
+	 ********************/
+	public List<User> getAllUsers() {
+		return userRepo.findAll();
+	}
 
 	public User getUserByCredentials(String username, String password) throws Exception {
 		
 		Optional<User> user = userRepo.getByCredentials(username, password);
 		if(user.isEmpty()) {
-			throw new Exception("User does not exists");
+			throw new ResourceNotFoundException("User");
 		}
 		
 		return user.get();
 	}
 	
+	
+	/********************
+		POST OPERATIONS
+	 ********************/
 	public User createUser(User user) throws Exception {
 		
 		Optional<User> exists = userRepo.findByUsername(user.getUsername());
 		
 		if(exists.isPresent()) {
-			throw new Exception("User already exists");
+			throw new UserExistsException("User");
 		}
 		
 		user.setRole(Role.ROLE_USER);
@@ -45,12 +54,15 @@ public class UserService {
 		return created;
 	}
 
+	/********************
+		UPDATE OPERATIONS
+	 ********************/
 	public User updateUser(String id, User user) throws Exception {
 
 		Optional<User> found = userRepo.findById(id);
 		
 		if(found.isEmpty()) {
-			throw new Exception("User does not exists");
+			throw new ResourceNotFoundException("User");
 		}
 		
 		User exists = found.get();
@@ -69,12 +81,15 @@ public class UserService {
 		
 	}
 
+	/********************
+		DELETE OPERATIONS
+	 ********************/
 	public User deleteUser(String id) throws Exception {
 		
 		Optional<User> found = userRepo.findById(id);
 		
 		if(found.isEmpty()) {
-			throw new Exception("User does not exists");
+			throw new ResourceNotFoundException("User");
 		}
 		
 		User deleted = found.get();
@@ -82,9 +97,6 @@ public class UserService {
 		return deleted;
 	}
 
-	public List<User> getAllUsers() {
-		return userRepo.findAll();
-	}
 	
 	
 	
