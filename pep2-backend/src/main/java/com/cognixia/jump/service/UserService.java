@@ -1,6 +1,7 @@
 package com.cognixia.jump.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,18 @@ public class UserService {
 			throw new Exception("User does not exists");
 		}
 		
-		User updated = found.get();
+		User exists = found.get();
+		
+		if(user.getFirstName()  == null) user.setFirstName(exists.getFirstName());
+		if(user.getLastName()   == null) user.setLastName(exists.getLastName());
+		if(user.getUsername()   == null) user.setUsername(exists.getUsername());
+		if(user.getPassword()   == null) user.setPassword(exists.getPassword());
+		if(user.getProfileImg() == null) user.setProfileImg(exists.getProfileImg());
+		if(user.getEmail()      == null) user.setEmail(exists.getEmail());
+		if(user.getRole()       == null) user.setRole(exists.getRole());
+		
+		user.setId(id);
+		User updated = user;
 		userRepo.save(user);
 		return updated;
 		
@@ -69,8 +81,6 @@ public class UserService {
 	}
 
 	public List<User> getAllUsers() {
-		
-		
 		return userRepo.findAll();
 	}
 	

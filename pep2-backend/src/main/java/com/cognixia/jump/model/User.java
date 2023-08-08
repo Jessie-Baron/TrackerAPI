@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
 
 @Document("User")
 public class User {
@@ -30,8 +30,9 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String password, String profileImg, String email, Role role, List<Show> showsWatched) {
-        this.firstName = firstName;
+    public User(String id, String firstName, String lastName, String username, String password, String profileImg, String email, Role role, List<Show> showsWatched) {
+        this.id = id;
+    	this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
@@ -41,12 +42,19 @@ public class User {
         this.showsWatched = showsWatched;
     }
 
-    public String getFirstName() {
-        return this.firstName;
+    public String getId() {
+    	return this.id;
     }
-
+    
+    public void setId(String id) {
+    	this.id = id;
+    }
+    public String getFirstName() {
+    	return this.firstName;
+    }
+    
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    	this.firstName = firstName;
     }
 
     public String getLastName() {
