@@ -1,7 +1,10 @@
 package com.cognixia.jump.service;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,7 @@ public class UserService {
 	}
 
 	public User updateUser(String id, User user) throws Exception {
-		
+
 		Optional<User> found = userRepo.findById(id);
 		
 		if(found.isEmpty()) {
@@ -52,17 +55,16 @@ public class UserService {
 		
 		User exists = found.get();
 		
-		if(user.getFirstName()  == null) user.setFirstName(exists.getFirstName());
-		if(user.getLastName()   == null) user.setLastName(exists.getLastName());
-		if(user.getUsername()   == null) user.setUsername(exists.getUsername());
-		if(user.getPassword()   == null) user.setPassword(exists.getPassword());
-		if(user.getProfileImg() == null) user.setProfileImg(exists.getProfileImg());
-		if(user.getEmail()      == null) user.setEmail(exists.getEmail());
-		if(user.getRole()       == null) user.setRole(exists.getRole());
+		if(user.getFirstName()  != null) exists.setFirstName(user.getFirstName());
+		if(user.getLastName()   != null) exists.setLastName(user.getLastName());
+		if(user.getUsername()   != null) exists.setUsername(user.getUsername());
+		if(user.getPassword()   != null) exists.setPassword(user.getPassword());
+		if(user.getProfileImg() != null) exists.setProfileImg(user.getProfileImg());
+		if(user.getEmail()      != null) exists.setEmail(user.getEmail());
+		if(user.getRole()       != null) exists.setRole(user.getRole());
 		
-		user.setId(id);
-		User updated = user;
-		userRepo.save(user);
+		User updated = exists;
+		userRepo.save(exists);
 		return updated;
 		
 	}
