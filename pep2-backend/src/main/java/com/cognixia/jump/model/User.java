@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document("User")
 public class User {
@@ -15,6 +16,7 @@ public class User {
     
     @Id
     private String id;
+    
     private String firstName;
     private String lastName;
     private String username;
