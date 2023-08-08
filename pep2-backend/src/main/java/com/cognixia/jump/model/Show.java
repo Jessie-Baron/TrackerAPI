@@ -17,10 +17,19 @@ public class Show {
     public Show() {
     }
 
-    public Show(String title, String creators, Integer episodes) {
+    public Show(String id, String title, String creators, Integer episodes) {
+        this.id = id;
         this.title = title;
         this.creators = creators;
         this.episodes = episodes;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
