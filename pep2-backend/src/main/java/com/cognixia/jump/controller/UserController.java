@@ -1,7 +1,6 @@
 package com.cognixia.jump.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +33,21 @@ public class UserController {
 		
 		return ResponseEntity.status(200).body(users);
 	}
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<?> getUserById(@PathVariable String id) throws Exception{
+		
+		User user = userService.getUserById(id);
+		
+		return ResponseEntity.status(200).body(user);
+	}
 
-	@GetMapping("/user")
+	
+	/********************
+		POST OPERATIONS
+	 ********************/
+	
+	@PostMapping("/user/auth")
 	public ResponseEntity<?> getUserByCredentials(@RequestBody User user) throws Exception{
 		
 		User validUser = userService.getUserByCredentials(user.getUsername(), user.getPassword());
@@ -43,9 +55,6 @@ public class UserController {
 		return ResponseEntity.status(200).body(validUser);
 	}
 	
-	/********************
-		POST OPERATIONS
-	 ********************/
 	@PostMapping("/user")
 	public ResponseEntity<?> createUser(@RequestBody User user) throws Exception{
 		
