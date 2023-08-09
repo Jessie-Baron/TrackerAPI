@@ -17,11 +17,8 @@ public class User {
     @Id
     private String id;
     
-    private String firstName;
-    private String lastName;
     private String username;
     private String password;
-    private String profileImg;
     private String email;
     private Role role;
     private List<Show> showsWatched;
@@ -30,157 +27,79 @@ public class User {
     public User() {
     }
 
-    public User(String id, String firstName, String lastName, String username, String password, String profileImg, String email, Role role, List<Show> showsWatched) {
-        this.id = id;
-    	this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-        this.profileImg = profileImg;
-        this.email = email;
-        this.role = role;
-        this.showsWatched = showsWatched;
-    }
 
-    public String getId() {
-    	return this.id;
-    }
-    
-    public void setId(String id) {
-    	this.id = id;
-    }
-    public String getFirstName() {
-    	return this.firstName;
-    }
-    
-    public void setFirstName(String firstName) {
-    	this.firstName = firstName;
-    }
+	public User(String id, String username, String password, String email, Role role, List<Show> showsWatched) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.showsWatched = showsWatched;
+	}
 
-    public String getLastName() {
-        return this.lastName;
-    }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getUsername() {
-        return this.username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getPassword() {
-        return this.password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public String getProfileImg() {
-        return this.profileImg;
-    }
 
-    public void setProfileImg(String profileImg) {
-        this.profileImg = profileImg;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getEmail() {
-        return this.email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public Role getRole() {
-        return this.role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public List<Show> getShowsWatched() {
-        return this.showsWatched;
-    }
 
-    public void setShowsWatched(List<Show> showsWatched) {
-        this.showsWatched = showsWatched;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public User firstName(String firstName) {
-        setFirstName(firstName);
-        return this;
-    }
 
-    public User lastName(String lastName) {
-        setLastName(lastName);
-        return this;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public User username(String username) {
-        setUsername(username);
-        return this;
-    }
 
-    public User password(String password) {
-        setPassword(password);
-        return this;
-    }
+	public Role getRole() {
+		return role;
+	}
 
-    public User profileImg(String profileImg) {
-        setProfileImg(profileImg);
-        return this;
-    }
 
-    public User email(String email) {
-        setEmail(email);
-        return this;
-    }
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
-    public User role(Role role) {
-        setRole(role);
-        return this;
-    }
 
-    public User showsWatched(List<Show> showsWatched) {
-        setShowsWatched(showsWatched);
-        return this;
-    }
+	public List<Show> getShowsWatched() {
+		return showsWatched;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof User)) {
-            return false;
-        }
-        User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(profileImg, user.profileImg) && Objects.equals(email, user.email) && Objects.equals(role, user.role) && Objects.equals(showsWatched, user.showsWatched);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, username, password, profileImg, email, role, showsWatched);
-    }
+	public void setShowsWatched(List<Show> showsWatched) {
+		this.showsWatched = showsWatched;
+	}
 
-    @Override
-    public String toString() {
-        return "{" +
-            " firstName='" + getFirstName() + "'" +
-            ", lastName='" + getLastName() + "'" +
-            ", username='" + getUsername() + "'" +
-            ", password='" + getPassword() + "'" +
-            ", profileImg='" + getProfileImg() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", role='" + getRole() + "'" +
-            ", showsWatched='" + getShowsWatched() + "'" +
-            "}";
-    }
+	
+
+   
 
 }

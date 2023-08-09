@@ -24,7 +24,20 @@ public class UserService {
 	public List<User> getAllUsers() {
 		return userRepo.findAll();
 	}
+	
+	public User getUserById(String id) throws ResourceNotFoundException {
+		
+		Optional<User> found = userRepo.findById(id);
+		if(found.isEmpty()) {
+			throw new ResourceNotFoundException("User");
+		}
+	
+		return found.get();
+	}
 
+	/********************
+		POST OPERATIONS
+	 ********************/
 	public User getUserByCredentials(String username, String password) throws Exception {
 		
 		Optional<User> user = userRepo.getByCredentials(username, password);
@@ -35,10 +48,6 @@ public class UserService {
 		return user.get();
 	}
 	
-	
-	/********************
-		POST OPERATIONS
-	 ********************/
 	public User createUser(User user) throws Exception {
 		
 		Optional<User> exists = userRepo.findByUsername(user.getUsername());
@@ -67,11 +76,8 @@ public class UserService {
 		
 		User exists = found.get();
 		
-		if(user.getFirstName()  != null) exists.setFirstName(user.getFirstName());
-		if(user.getLastName()   != null) exists.setLastName(user.getLastName());
 		if(user.getUsername()   != null) exists.setUsername(user.getUsername());
 		if(user.getPassword()   != null) exists.setPassword(user.getPassword());
-		if(user.getProfileImg() != null) exists.setProfileImg(user.getProfileImg());
 		if(user.getEmail()      != null) exists.setEmail(user.getEmail());
 		if(user.getRole()       != null) exists.setRole(user.getRole());
 		
@@ -96,6 +102,7 @@ public class UserService {
 		userRepo.delete(found.get());
 		return deleted;
 	}
+
 
 	
 	
