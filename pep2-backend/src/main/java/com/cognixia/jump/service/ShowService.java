@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.model.Show;
 import com.cognixia.jump.repository.ShowRepository;
 
+@Service
 public class ShowService {
     
     @Autowired
