@@ -2,7 +2,9 @@ package com.cognixia.jump.model;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "showsWatched")
 public class UserShow {
 
     public enum Status {
@@ -11,6 +13,7 @@ public class UserShow {
     
     @Id
     private String id;
+    
     private String title;
     private Status status;
     private Integer episodesWatched;
@@ -19,13 +22,24 @@ public class UserShow {
     public UserShow() {
     }
 
-    public UserShow(String title, Status status, Integer episodesWatched) {
+    public UserShow(String id, String title, Status status, Integer episodesWatched) {
+    	super();
+    	this.id = id;
         this.title = title;
         this.status = status;
         this.episodesWatched = episodesWatched;
     }
+    
 
-    public String getTitle() {
+    public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
         return this.title;
     }
 

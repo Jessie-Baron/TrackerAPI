@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.model.User;
+import com.cognixia.jump.model.UserShow;
 import com.cognixia.jump.service.UserService;
 
 @RestController
@@ -24,7 +25,7 @@ public class UserController {
 	UserService userService;
 	
 	/********************
-		GET OPERATIONS
+	 GET OPERATIONS
 	 ********************/
 	@GetMapping("/users")
 	public ResponseEntity<?> getUsers(){
@@ -44,7 +45,7 @@ public class UserController {
 
 	
 	/********************
-		POST OPERATIONS
+	 POST OPERATIONS
 	 ********************/
 	
 	@PostMapping("/user/auth")
@@ -63,8 +64,17 @@ public class UserController {
 		return ResponseEntity.status(201).body(created);
 	}
 	
+	@PostMapping("/user/{id}/show")
+	public ResponseEntity<?> addShow(@PathVariable String id, @RequestBody UserShow userShow ) throws Exception{
+		
+		UserShow show = userService.addShow(id, userShow);
+		
+		return ResponseEntity.status(201).body(show);
+	}
+	
+	
 	/********************
-		UPDATE OPERATIONS
+	 UPDATE OPERATIONS
 	 ********************/
 	@PatchMapping("/user/{id}") 
 	public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody User user ) throws Exception{
@@ -75,7 +85,7 @@ public class UserController {
 	}
 	
 	/********************
-		DELETE OPERATIONS
+	 DELETE OPERATIONS
 	 ********************/
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable String id) throws Exception{

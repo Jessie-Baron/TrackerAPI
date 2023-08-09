@@ -1,7 +1,6 @@
 package com.cognixia.jump.model;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,14 +20,14 @@ public class User {
     private String password;
     private String email;
     private Role role;
-    private List<Show> showsWatched;
+    private List<UserShow> showsWatched;
 
 
     public User() {
     }
 
 
-	public User(String id, String username, String password, String email, Role role, List<Show> showsWatched) {
+	public User(String id, String username, String password, String email, Role role, List<UserShow> showsWatched) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -89,14 +88,23 @@ public class User {
 	}
 
 
-	public List<Show> getShowsWatched() {
+	public List<UserShow> getShowsWatched() {
 		return showsWatched;
 	}
 
 
-	public void setShowsWatched(List<Show> showsWatched) {
+	public void setShowsWatched(List<UserShow> showsWatched) {
 		this.showsWatched = showsWatched;
 	}
+
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role="
+				+ role + ", showsWatched=" + showsWatched + "]";
+	}
+	
+	
 
 	
 
