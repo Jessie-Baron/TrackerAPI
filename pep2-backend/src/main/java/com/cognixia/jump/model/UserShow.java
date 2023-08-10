@@ -13,16 +13,27 @@ public class UserShow {
     private String id;
     private String title;
     private Status status;
+    private Integer rating;
     private Integer episodesWatched;
 
 
     public UserShow() {
     }
 
-    public UserShow(String title, Status status, Integer episodesWatched) {
+    public UserShow(String id, String title, Status status, Integer rating, Integer episodesWatched) {
+        this.id = id;
         this.title = title;
         this.status = status;
+        this.rating = rating;
         this.episodesWatched = episodesWatched;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -41,12 +52,25 @@ public class UserShow {
         this.status = status;
     }
 
+    public Integer getRating() {
+        return this.rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
     public Integer getEpisodesWatched() {
         return this.episodesWatched;
     }
 
     public void setEpisodesWatched(Integer episodesWatched) {
         this.episodesWatched = episodesWatched;
+    }
+
+    public UserShow id(String id) {
+        setId(id);
+        return this;
     }
 
     public UserShow title(String title) {
@@ -56,6 +80,11 @@ public class UserShow {
 
     public UserShow status(Status status) {
         setStatus(status);
+        return this;
+    }
+
+    public UserShow rating(Integer rating) {
+        setRating(rating);
         return this;
     }
 
@@ -72,21 +101,24 @@ public class UserShow {
             return false;
         }
         UserShow userShow = (UserShow) o;
-        return Objects.equals(title, userShow.title) && Objects.equals(status, userShow.status) && Objects.equals(episodesWatched, userShow.episodesWatched);
+        return Objects.equals(id, userShow.id) && Objects.equals(title, userShow.title) && Objects.equals(status, userShow.status) && Objects.equals(rating, userShow.rating) && Objects.equals(episodesWatched, userShow.episodesWatched);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, status, episodesWatched);
+        return Objects.hash(id, title, status, rating, episodesWatched);
     }
 
     @Override
     public String toString() {
         return "{" +
-            " title='" + getTitle() + "'" +
+            " id='" + getId() + "'" +
+            ", title='" + getTitle() + "'" +
             ", status='" + getStatus() + "'" +
+            ", rating='" + getRating() + "'" +
             ", episodesWatched='" + getEpisodesWatched() + "'" +
             "}";
     }
+
 
 }
