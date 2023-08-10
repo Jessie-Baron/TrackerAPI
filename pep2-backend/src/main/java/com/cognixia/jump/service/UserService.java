@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import com.cognixia.jump.exception.InsufficientPermissionsException;
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.exception.UserExistsException;
 import com.cognixia.jump.model.User;
@@ -69,6 +70,21 @@ public class UserService {
 		userRepo.save(user);
 		return created;
 	}
+	
+	public User createAdmin(User user) throws Exception {
+		
+		Optional<User> exists = userRepo.findByUsername(user.getUsername());
+		
+		if(exists.isPresent()) {
+			throw new UserExistsException("User");
+		}
+		
+		user.setRole(Role.ROLE_ADMIN);
+		
+		User created = user;
+		userRepo.save(user);
+		return created;
+	}
 
 	public UserShow addShow(String id, UserShow userShow) throws Exception {
 		
@@ -78,14 +94,9 @@ public class UserService {
 		}
 		
 		User user = found.get();
-		List<UserShow> shows;
 		
-		// Checks if the user has an existing list
-		if(user.getShowsWatched() == null) {
-			shows = new ArrayList<>();
-		} else {
-			shows = user.getShowsWatched();
-		}
+		// Checks if the user has an existing list	
+		List<UserShow> shows = user.getShowsWatched() == null ? new ArrayList<>() : user.getShowsWatched();
 		
 		// Generate unique id
 		int unique_id= (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
@@ -132,17 +143,54 @@ public class UserService {
 	/********************
 		DELETE OPERATIONS
 	 ********************/
-	public User deleteUser(String id) throws Exception {
+	public User deleteUser(String userId, User admin) throws Exception {
+		
+		if(admin.getId() == null) {
+			throw new ResourceNotFoundException("ID");
+		}
+		
+		Optional<User> foundUser = userRepo.findById(userId);
+		Optional<User> foundAdmin = userRepo.findById(admin.getId());
+		
+		if(foundUser.isEmpty() || foundAdmin.isEmpty()) {
+			throw new ResourceNotFoundException("User");
+		}
+		
+		if(foundAdmin.get().getRole() == Role.ROLE_USER) {
+			throw new InsufficientPermissionsException();
+		}
+		
+		User deleted = foundUser.get();
+		userRepo.delete(foundUser.get());
+		return deleted;
+	}
+
+	public UserShow removeShow(String id, String showId) throws ResourceNotFoundException {
 		
 		Optional<User> found = userRepo.findById(id);
-		
 		if(found.isEmpty()) {
 			throw new ResourceNotFoundException("User");
 		}
 		
-		User deleted = found.get();
-		userRepo.delete(found.get());
-		return deleted;
+		User user = found.get();
+		List<UserShow> list = user.getShowsWatched();
+		Optional<UserShow> removed = Optional.empty();
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getId().equals(showId)) {
+				removed = Optional.of(list.get(i));
+				list.remove(i);
+			}
+		}
+		
+		if(removed.isEmpty()) {
+			throw new ResourceNotFoundException("Show");
+		}
+		
+		user.setShowsWatched(list);
+		userRepo.save(user);
+		
+		return removed.get() ;
 	}
 
 

@@ -2,6 +2,8 @@ package com.cognixia.jump.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.UserShow;
 import com.cognixia.jump.service.UserService;
@@ -49,7 +52,7 @@ public class UserController {
 	 ********************/
 	
 	@PostMapping("/user/auth")
-	public ResponseEntity<?> getUserByCredentials(@RequestBody User user) throws Exception{
+	public ResponseEntity<?> getUserByCredentials(@Valid @RequestBody User user) throws Exception{
 		
 		User validUser = userService.getUserByCredentials(user.getUsername(), user.getPassword());
 		
@@ -57,9 +60,18 @@ public class UserController {
 	}
 	
 	@PostMapping("/user")
-	public ResponseEntity<?> createUser(@RequestBody User user) throws Exception{
+	public ResponseEntity<?> createUser(@Valid @RequestBody User user) throws Exception{
 		
 		User created = userService.createUser(user);
+		
+		return ResponseEntity.status(201).body(created);
+	}
+	
+	// Will remove method once in production
+	@PostMapping("/user/admin")
+	public ResponseEntity<?> createAdmin(@Valid @RequestBody User user) throws Exception{
+		
+		User created = userService.createAdmin(user);
 		
 		return ResponseEntity.status(201).body(created);
 	}
@@ -87,12 +99,23 @@ public class UserController {
 	/********************
 	 DELETE OPERATIONS
 	 ********************/
-	@DeleteMapping("/user/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable String id) throws Exception{
+	
+	// ID of the user you want to delete goes within the URI, while the body request the User object of the admin
+	// The request body can just have {id: "<id here>"}, it does not need to have all fields
+	@DeleteMapping("/user/{userId}")
+	public ResponseEntity<?> deleteUser(@PathVariable String userId, @RequestBody User admin) throws Exception{
 		
-		User deleted = userService.deleteUser(id);
+		User deleted = userService.deleteUser(userId, admin);
 		
 		return ResponseEntity.status(201).body(deleted);
+	}
+	
+	@DeleteMapping("/user/{id}/{showId}")
+	public ResponseEntity<?> removeShow(@PathVariable String id, @PathVariable String showId) throws ResourceNotFoundException{
+		
+		UserShow userShow = userService.removeShow(id, showId);
+		
+		return ResponseEntity.status(200).body(userShow);
 	}
 	
 	
