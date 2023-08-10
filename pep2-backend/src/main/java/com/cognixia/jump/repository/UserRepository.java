@@ -17,7 +17,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 	public Optional<User> findByUsername(String username);
 	
     @Query(value = "{$and: [{showsWatched.title: 0?}, {showWatched.status: 'COMPLETED'}]}", count = true)
-    public int countHowManyUsersCompletedAShow(String title);
+    public List<Object> getCountOfHowManyUsersCompletedAShow(String title);
 	
     @Aggregation(pipeline = {"[ {$match: {$and: [{showsWatched.title: 0?}, {showsWatched.rating: {$gte: 1}}, {showsWatched.rating: {$lte: 5}}]}}, {$group: {_id: null, avgRating: {$avg: '$showsWatched.rating'}}}]"})
     public List<Object> getAverageRatingOfAShow(String title);

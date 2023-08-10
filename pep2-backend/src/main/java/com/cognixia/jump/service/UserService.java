@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
@@ -33,6 +34,14 @@ public class UserService {
 		}
 	
 		return found.get();
+	}
+
+	public Object getGlobalShowCompletedCount(String title) {
+		return userRepo.getCountOfHowManyUsersCompletedAShow(title);
+	}
+
+	public Object getShowsAverageRating(String title) {
+		return userRepo.getAverageRatingOfAShow(title);
 	}
 
 	/********************
