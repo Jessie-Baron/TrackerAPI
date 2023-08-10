@@ -96,6 +96,14 @@ public class UserController {
 		return ResponseEntity.status(201).body(updated);
 	}
 	
+	@PatchMapping("/user/{id}/updateShow")
+	public ResponseEntity<?> updateUserShow(@PathVariable String id, @RequestBody UserShow show) throws Exception {
+		
+		UserShow updated = userService.updateShow(id, show);
+		
+		return ResponseEntity.status(200).body(updated);
+	}
+	
 	/********************
 	 DELETE OPERATIONS
 	 ********************/

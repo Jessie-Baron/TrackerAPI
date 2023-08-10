@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 //import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,7 @@ import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.User.Role;
 import com.cognixia.jump.model.UserShow;
 import com.cognixia.jump.repository.UserRepository;
+import com.mongodb.client.result.UpdateResult;
 
 @Service
 public class UserService {
@@ -23,8 +28,8 @@ public class UserService {
 	@Autowired
 	UserRepository userRepo;
 	
-//	@Autowired
-//	private MongoTemplate mongoTemplate;
+	@Autowired
+	private MongoTemplate mongoTemplate;
 	
 	/********************
 		GET OPERATIONS
@@ -96,22 +101,22 @@ public class UserService {
 		User user = found.get();
 		
 		// Checks if the user has an existing list	
-		List<UserShow> shows = user.getShowsWatched() == null ? new ArrayList<>() : user.getShowsWatched();
+//		List<UserShow> shows = user.getShowsWatched() == null ? new ArrayList<>() : user.getShowsWatched();
 		
 		// Generate unique id
 		int unique_id= (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
 		String showId = String.valueOf(unique_id) + user.getId() + userShow.getTitle().replace(" ", "");
 		
 		userShow.setId(showId);
-		shows.add(userShow);
-		user.setShowsWatched(shows);
-		
-		userRepo.save(user);
-		
-//		Query query = new Query(Criteria.where("_id").is(id));
-//		Update update = new Update().push("showsWatched", userShow);
+//		shows.add(userShow);
+//		user.setShowsWatched(shows);
 //		
-//		mongoTemplate.updateFirst(query, update, User.class);
+//		userRepo.save(user);
+		
+		Query query = new Query(Criteria.where("_id").is(id));
+		Update update = new Update().push("showsWatched", userShow);
+		
+		mongoTemplate.updateFirst(query, update, User.class);
 		
 		return userShow;
 	}
@@ -139,6 +144,30 @@ public class UserService {
 		return updated;
 		
 	}
+	
+	public UserShow updateShow(String id, UserShow show) throws Exception {
+		
+		Optional<User> found = userRepo.findById(id);
+		if(found.isEmpty()) {
+			throw new ResourceNotFoundException("User");
+		}
+		
+		Query select = Query.query(Criteria.where("showsWatched._id").is(show.getId()));
+		Update update = new Update();
+		
+		if(show.getEpisodesWatched() != null) update.set("showsWatched.$.episodesWatched", show.getEpisodesWatched());
+		if(show.getStatus() != null) update.set("showsWatched.$.status", show.getStatus());
+		User updated = mongoTemplate.findAndModify(select, update, User.class);
+		
+		if(updated == null) {
+			throw new ResourceNotFoundException("Show");
+		}
+		
+		UserShow updatedShow = show;
+
+		return updatedShow;
+	}
+
 
 	/********************
 		DELETE OPERATIONS
