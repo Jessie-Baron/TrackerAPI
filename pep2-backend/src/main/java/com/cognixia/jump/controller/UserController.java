@@ -20,6 +20,8 @@ import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.UserShow;
 import com.cognixia.jump.service.UserService;
 
+
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -76,7 +78,7 @@ public class UserController {
 		return ResponseEntity.status(201).body(created);
 	}
 	
-	@PostMapping("/user/{id}/show")
+	@PostMapping("/user/show/{id}")
 	public ResponseEntity<?> addShow(@PathVariable String id, @RequestBody UserShow userShow ) throws Exception{
 		
 		UserShow show = userService.addShow(id, userShow);
@@ -96,7 +98,7 @@ public class UserController {
 		return ResponseEntity.status(201).body(updated);
 	}
 	
-	@PatchMapping("/user/{id}/updateShow")
+	@PatchMapping("/user/updateShow/{id}")
 	public ResponseEntity<?> updateUserShow(@PathVariable String id, @RequestBody UserShow show) throws Exception {
 		
 		UserShow updated = userService.updateShow(id, show);
