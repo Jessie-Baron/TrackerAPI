@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.exception.UserExistsException;
+import com.cognixia.jump.model.Title;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.User.Role;
 import com.cognixia.jump.repository.UserRepository;
@@ -34,14 +35,6 @@ public class UserService {
 		}
 	
 		return found.get();
-	}
-
-	public Object getGlobalShowCompletedCount(String title) {
-		return userRepo.getCountOfHowManyUsersCompletedAShow(title);
-	}
-
-	public Object getShowsAverageRating(String title) {
-		return userRepo.getAverageRatingOfAShow(title);
 	}
 
 	/********************
@@ -70,6 +63,17 @@ public class UserService {
 		User created = user;
 		userRepo.save(user);
 		return created;
+	}
+
+	public Object getGlobalShowCompletedCount(String title) {
+		return userRepo.getCountOfHowManyUsersCompletedAShow(title);
+	}
+
+	public Double getShowsAverageRating(String title) {
+		Double avg = userRepo.getAverageRatingOfAShow();
+		System.out.println(avg.toString());
+		if (avg == null) return null;
+		else return avg;
 	}
 
 	/********************

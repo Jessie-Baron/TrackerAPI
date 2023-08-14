@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cognixia.jump.model.Title;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.UserService;
 
@@ -61,6 +62,20 @@ public class UserController {
 		User created = userService.createUser(user);
 		
 		return ResponseEntity.status(201).body(created);
+	}
+
+	@PostMapping("/users/count")
+	public ResponseEntity<?> getCompletedCount(@RequestBody Title title) {
+
+		return ResponseEntity.status(200).body(userService.getGlobalShowCompletedCount(title.getTitle()));
+	} 
+
+	@PostMapping("/users/rating")
+	public ResponseEntity<?> getAverageRating(@RequestBody Title title) {
+
+		userService.getShowsAverageRating(title.getTitle());
+
+		return ResponseEntity.status(200).build();
 	}
 	
 	/********************
