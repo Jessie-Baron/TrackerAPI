@@ -3,6 +3,7 @@ package com.cognixia.jump.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,7 +72,7 @@ public class UserController {
 	} 
 
 	@PostMapping("/users/rating")
-	public ResponseEntity<?> getAverageRating(@RequestBody Title title) {
+	public ResponseEntity<AggregationResults<Object>> getAverageRating(@RequestBody Title title) {
 
 		userService.getShowsAverageRating(title.getTitle());
 
