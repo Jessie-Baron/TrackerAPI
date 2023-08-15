@@ -29,11 +29,11 @@ public interface UserRepository extends MongoRepository<User, String> {
 
 //    @Query(value = "{$and: [{showsWatched.title: ?0}, {showWatched.status: 'COMPLETED'}]}", count = true)
 	@Aggregation( pipeline = {
-			"{$match: {'showsWatched.title': 'Pokemon','showsWatched.status': 'COMPLETED'}}",
+			"{$match: {'showsWatched.title': ?0,'showsWatched.status': 'COMPLETED'}}",
 			"{$group: {_id: null, count:{$sum: 1}}}",
 			"{$project: {_id:0}}"
 	})
-    public Integer getCountOfHowManyUsersCompletedAShow(String title);
+    public Optional<Integer> getCountOfHowManyUsersCompletedAShow(String title);
 	
     @Aggregation(pipeline = { 
         "{$project: {_id: 1, showsWatched: 1}}",

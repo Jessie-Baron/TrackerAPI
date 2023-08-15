@@ -119,11 +119,15 @@ public class UserService {
 		return userShow;
 	}
 	
-	public int getGlobalShowCompletedCount(String title) {
+	public int getGlobalShowCompletedCount(String title) throws ResourceNotFoundException {
 		
-		Integer results = userRepo.getCountOfHowManyUsersCompletedAShow(title);
+		Optional<Integer> results = userRepo.getCountOfHowManyUsersCompletedAShow(title);
 		
-		return results.intValue();
+		if(results.isEmpty()) {
+			throw new ResourceNotFoundException("Show");
+		}
+		
+		return results.get().intValue();
 	}
 
 	public AggregationResults<AverageResult> getShowsAverageRating(String title) {

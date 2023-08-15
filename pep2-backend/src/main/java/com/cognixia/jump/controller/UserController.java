@@ -73,7 +73,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users/count")
-	public ResponseEntity<?> getCompletedCount(@RequestBody Title title) {
+	public ResponseEntity<?> getCompletedCount(@RequestBody Title title) throws ResourceNotFoundException {
 
 		return ResponseEntity.status(200).body(userService.getGlobalShowCompletedCount(title.getTitle()));
 	} 
