@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -11,11 +12,14 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 //import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.exception.InsufficientPermissionsException;
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.exception.UserExistsException;
+import com.cognixia.jump.model.AverageResult;
+import com.cognixia.jump.model.Title;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.User.Role;
 import com.cognixia.jump.model.UserShow;
@@ -123,6 +127,18 @@ public class UserService {
 		return userShow;
 	}
 	
+	public Object getGlobalShowCompletedCount(String title) {
+		return userRepo.getCountOfHowManyUsersCompletedAShow(title);
+	}
+
+	public AggregationResults<AverageResult> getShowsAverageRating(String title) {
+		
+		AggregationResults<AverageResult> avg = userRepo.getAverageRatingOfAShow(title);
+		System.out.println(avg.toString());
+		if (avg == null) return null;
+		else return avg;
+	}
+
 	/********************
 		UPDATE OPERATIONS
 	 ********************/

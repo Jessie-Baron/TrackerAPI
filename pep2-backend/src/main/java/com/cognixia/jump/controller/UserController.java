@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
+import com.cognixia.jump.model.Title;
+
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.UserShow;
 import com.cognixia.jump.service.UserService;
@@ -67,6 +70,20 @@ public class UserController {
 		User created = userService.createUser(user);
 		
 		return ResponseEntity.status(201).body(created);
+	}
+
+	@PostMapping("/users/count")
+	public ResponseEntity<?> getCompletedCount(@RequestBody Title title) {
+
+		return ResponseEntity.status(200).body(userService.getGlobalShowCompletedCount(title.getTitle()));
+	} 
+
+	@PostMapping("/users/rating")
+	public ResponseEntity<AggregationResults<Object>> getAverageRating(@RequestBody Title title) {
+
+		userService.getShowsAverageRating(title.getTitle());
+
+		return ResponseEntity.status(200).build();
 	}
 	
 	// Will remove method once in production
