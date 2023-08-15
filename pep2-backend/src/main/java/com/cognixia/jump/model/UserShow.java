@@ -41,7 +41,7 @@ public class UserShow {
 	}
 
 	public String getTitle() {
-        return this.id;
+        return this.title;
     }
 
     public void setTitle(String title) {

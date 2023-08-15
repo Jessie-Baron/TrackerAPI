@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
+import com.cognixia.jump.model.AverageResult;
 import com.cognixia.jump.model.Title;
-
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.UserShow;
 import com.cognixia.jump.service.UserService;
@@ -79,11 +79,11 @@ public class UserController {
 	} 
 
 	@PostMapping("/users/rating")
-	public ResponseEntity<AggregationResults<Object>> getAverageRating(@RequestBody Title title) {
+	public ResponseEntity<?> getAverageRating(@RequestBody Title title) {
 
-		userService.getShowsAverageRating(title.getTitle());
+		AggregationResults<AverageResult> result = userService.getShowsAverageRating(title.getTitle());
 
-		return ResponseEntity.status(200).build();
+		return ResponseEntity.status(200).body(result);
 	}
 	
 	// Will remove method once in production

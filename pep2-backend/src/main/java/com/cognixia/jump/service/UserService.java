@@ -4,27 +4,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+//import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-//import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.exception.InsufficientPermissionsException;
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.exception.UserExistsException;
 import com.cognixia.jump.model.AverageResult;
-import com.cognixia.jump.model.Title;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.model.User.Role;
 import com.cognixia.jump.model.UserShow;
 import com.cognixia.jump.repository.UserRepository;
-import com.mongodb.client.result.UpdateResult;
 
 @Service
 public class UserService {
@@ -106,18 +104,12 @@ public class UserService {
 		
 		User user = found.get();
 		
-		// Checks if the user has an existing list	
-//		List<UserShow> shows = user.getShowsWatched() == null ? new ArrayList<>() : user.getShowsWatched();
 		
 		// Generate unique id
 		int unique_id= (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
 		String showId = String.valueOf(unique_id) + user.getId() + userShow.getTitle().replace(" ", "");
 		
 		userShow.setId(showId);
-//		shows.add(userShow);
-//		user.setShowsWatched(shows);
-//		
-//		userRepo.save(user);
 		
 		Query query = new Query(Criteria.where("_id").is(id));
 		Update update = new Update().push("showsWatched", userShow);
@@ -127,8 +119,11 @@ public class UserService {
 		return userShow;
 	}
 	
-	public Object getGlobalShowCompletedCount(String title) {
-		return userRepo.getCountOfHowManyUsersCompletedAShow(title);
+	public int getGlobalShowCompletedCount(String title) {
+		
+		Integer results = userRepo.getCountOfHowManyUsersCompletedAShow(title);
+		
+		return results.intValue();
 	}
 
 	public AggregationResults<AverageResult> getShowsAverageRating(String title) {
@@ -175,6 +170,7 @@ public class UserService {
 		
 		if(show.getEpisodesWatched() != null) update.set("showsWatched.$.episodesWatched", show.getEpisodesWatched());
 		if(show.getStatus() != null) update.set("showsWatched.$.status", show.getStatus());
+		if(show.getRating() != null) update.set("showsWatched.$.rating", show.getRating());
 		User updated = mongoTemplate.findAndModify(select, update, User.class);
 		
 		if(updated == null) {
