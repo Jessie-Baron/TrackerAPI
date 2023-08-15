@@ -72,6 +72,7 @@ public class UserService {
 		user.setRole(Role.ROLE_USER);
 		
 		User created = user;
+		created.setShowsWatched(new ArrayList<>());
 		userRepo.save(user);
 		return created;
 	}
@@ -87,6 +88,7 @@ public class UserService {
 		user.setRole(Role.ROLE_ADMIN);
 		
 		User created = user;
+		created.setShowsWatched(new ArrayList<>());
 		userRepo.save(user);
 		return created;
 	}
