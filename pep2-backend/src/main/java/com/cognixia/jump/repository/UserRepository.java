@@ -42,7 +42,7 @@ public interface UserRepository extends MongoRepository<User, String> {
         "{$group: {_id: null, avgRating: {$avg: '$showsWatched.rating'}}}", 
         "{$project: {_id: 0, avgRating: 1}}"
     })
-    public AggregationResults<AverageResult> getAverageRatingOfAShow(String title);
+    public Optional<Double> getAverageRatingOfAShow(String title);
 
     // @Aggregation(pipeline = "[ {$match: {$and: [{'showsWatched.title': 'Breaking Bad'}, {'showsWatched.rating': {$gte: 1}}, {'showsWatched.rating': {$lte: 5}}]}}, {$unwind: '$showsWatched'}, {$group: {_id: null, avgRating: {$avg: '$showsWatched.rating'}}}]")
     // public Double getAverageRatingOfAShow();

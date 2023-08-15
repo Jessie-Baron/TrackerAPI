@@ -81,7 +81,7 @@ public class UserController {
 	@PostMapping("/users/rating")
 	public ResponseEntity<?> getAverageRating(@RequestBody Title title) {
 
-		AggregationResults<AverageResult> result = userService.getShowsAverageRating(title.getTitle());
+		double result = userService.getShowsAverageRating(title.getTitle());
 
 		return ResponseEntity.status(200).body(result);
 	}

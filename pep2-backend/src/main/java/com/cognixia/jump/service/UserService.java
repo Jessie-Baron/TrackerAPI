@@ -130,12 +130,16 @@ public class UserService {
 		return results.get().intValue();
 	}
 
-	public AggregationResults<AverageResult> getShowsAverageRating(String title) {
+	public double getShowsAverageRating(String title) {
 		
-		AggregationResults<AverageResult> avg = userRepo.getAverageRatingOfAShow(title);
+		Optional<Double> avg = userRepo.getAverageRatingOfAShow(title);
 		System.out.println(avg.toString());
-		if (avg == null) return null;
-		else return avg;
+
+		if (avg.isEmpty()) {
+			return 0.0;
+		} else {
+			return avg.get();
+		}
 	}
 
 	/********************
