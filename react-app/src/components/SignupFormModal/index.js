@@ -6,9 +6,6 @@ import "./SignupForm.css";
 
 function SignupFormModal() {
 	const dispatch = useDispatch();
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [profileImg, setProfileImg] = useState("");
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -42,29 +39,11 @@ function SignupFormModal() {
 					))}
 				</ul>
 				<label>
-					First Name
+					Email
 					<input
 						type="text"
-						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Last Name
-					<input
-						type="text"
-						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Profile Picture
-					<input
-						type="text"
-						value={profileImg}
-						onChange={(e) => setProfileImg(e.target.value)}
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
 				</label>

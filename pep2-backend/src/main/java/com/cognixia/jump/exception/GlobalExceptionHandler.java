@@ -43,4 +43,11 @@ public class GlobalExceptionHandler {
     	
     	return ResponseEntity.status(404).body(errorDetails);
     }
+    
+    @ExceptionHandler(InsufficientPermissionsException.class)
+    public ResponseEntity<?> insufficientPerms(InsufficientPermissionsException ex, WebRequest request){
+    	ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+    	
+    	return ResponseEntity.status(401).body(errorDetails);
+    }
 }

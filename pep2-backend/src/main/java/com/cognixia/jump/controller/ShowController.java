@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.model.Show;
+import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.ShowService;
 
 @RequestMapping("/api")
@@ -39,15 +40,15 @@ public class ShowController {
         }
     }
 
-    @PostMapping("/shows")
-    public ResponseEntity<Show> createShow(@RequestBody Show show) {
-        Show createdShow = service.createShow(show);
+    @PostMapping("/shows/{userId}")
+    public ResponseEntity<Show> createShow(@RequestBody Show show, @PathVariable String userId) throws Exception {
+        Show createdShow = service.createShow(show, userId);
         return ResponseEntity.status(201).body(createdShow);
     }
 
-    @PutMapping("/shows/{id}")
-    public ResponseEntity<Show> updateShow(@RequestBody Show show, @PathVariable String id) {
-        Show updatedShow = service.updateShow(show);
+    @PutMapping("/shows/{userId}/{id}")
+    public ResponseEntity<Show> updateShow(@RequestBody Show show, @PathVariable String id, @PathVariable String userId) throws Exception {
+        Show updatedShow = service.updateShow(show, userId);
         if (updatedShow == null) {
             return ResponseEntity.status(404).build();
         } else {
@@ -55,9 +56,9 @@ public class ShowController {
         }
     }
 
-    @DeleteMapping("/shows/{id}")
-    public ResponseEntity<Show> deleteShow(@PathVariable String id) {
-        Show deletedShow = service.deleteShowById(id);
+    @DeleteMapping("/shows/{userId}/{id}")
+    public ResponseEntity<Show> deleteShow(@PathVariable String id, @PathVariable String userId) throws Exception {
+        Show deletedShow = service.deleteShowById(id, userId);
         if (deletedShow == null) {
             return ResponseEntity.status(404).build();
         } else {
