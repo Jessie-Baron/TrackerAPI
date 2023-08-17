@@ -24,7 +24,7 @@ const deleteTv= (id) => ({
 });
 
 export const fetchAllTv = () => async (dispatch) => {
-  const response = await fetch("/api/tv");
+  const response = await fetch("/api/shows");
   if (response.ok) {
     const tv = await response.json();
     dispatch(getTv(tv));
@@ -33,7 +33,7 @@ export const fetchAllTv = () => async (dispatch) => {
 };
 
 export const fetchPostTv = (tv) => async (dispatch) => {
-  const response = await fetch("/api/tv", {
+  const response = await fetch("/api/shows", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
