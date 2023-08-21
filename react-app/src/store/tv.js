@@ -32,8 +32,18 @@ export const fetchAllTv = () => async (dispatch) => {
   }
 };
 
-export const fetchPostTv = (tv) => async (dispatch) => {
-  const response = await fetch("/api/shows", {
+export const fetchAllUsers = () => async (dispatch) => {
+  const response = await fetch("/api/users");
+  if (response.ok) {
+    const tv = await response.json();
+    dispatch(getTv(tv));
+    return tv;
+  }
+};
+
+export const fetchPostTv = (userId, tv) => async (dispatch) => {
+  console.log("This is the data >>>>>>>>>>>", userId, tv)
+  const response = await fetch(`/api/user/show/${userId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -66,8 +76,8 @@ export const fetchEditTv = (tvId, payload) => async (dispatch) => {
   }
 }
 
-export const fetchTv = (id) => async (dispatch) => {
-  const response = await fetch(`/api/tv/${id}`, {
+export const fetchDeleteTv = (id, showId) => async (dispatch) => {
+  const response = await fetch(`/api/user/${id}/${showId}`, {
     method: "DELETE",
   });
   console.log(response)

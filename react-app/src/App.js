@@ -6,6 +6,8 @@ import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import TvDropdown from "./components/TvDropdown";
+import TvGrid from "./components/tvgrid";
+import AdminControls from "./components/AdminControls";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,7 +30,9 @@ function App() {
             <SignupFormPage />
           </Route>
           <Route path='/'>
+          {user?.role === 'ROLE_ADMIN' && <AdminControls />}
             {user && <TvDropdown />}
+            {user && <TvGrid />}
           </Route>
         </Switch>
       )}

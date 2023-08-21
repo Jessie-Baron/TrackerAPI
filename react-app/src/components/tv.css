@@ -1,0 +1,60 @@
+.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#root > div.dropdown-container > div.dropdown > form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: left;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+    padding: 15px;
+}
+
+.select {
+    width: 150px;
+}
+
+.select-2 {
+    width: 50px;
+}
+
+#root > div.dropdown-container > div.dropdown > form > button {
+    width: 50px;
+}
+
+.tv-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
+    margin-top: 5%;
+    margin-left: 2%;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+    gap: 15px;
+    background-color: white;
+    width: 250px;
+    height: 180px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+}
+
+.admin-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding-top: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+    width: 20%;
+    height: 150px;
+}
