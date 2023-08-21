@@ -20,11 +20,10 @@ const TvGrid = () => {
     }, [dispatch]);
 
     const deleteShow = async (show) => {
-        await dispatch(tvActions.fetchDeleteTv(user.id, show.id))
-        console.log(show, show.id)
-        await dispatch(tvActions.fetchAllTv())
+        let idx = user.showsWatched.findIndex((ele) => ele.title === show.title)
+        user.showsWatched.splice(idx, 1)
         await dispatch(tvActions.fetchAllUsers())
-        .then(history.push("/"))
+        await dispatch(tvActions.fetchAllTv())
     };
 
     return (
