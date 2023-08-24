@@ -20,14 +20,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 	
 	public Optional<User> findByUsername(String username);
 	
-//	@Query("{_id: ?0,showsWatched : {id : ?1}}")
-//	public Optional<UserShow> getUserShow(String userId,String showId);
-	
-	/*
-	 * db.User.deleteOne({_id: ObjectId("64d3df241217646265e70d4c"), "showsWatched._id": "169160682664d3df241217646265e70d4cHunter"});
-	 */
 
-//    @Query(value = "{$and: [{showsWatched.title: ?0}, {showWatched.status: 'COMPLETED'}]}", count = true)
 	@Aggregation( pipeline = {
 			"{$match: {'showsWatched.title': ?0,'showsWatched.status': 'COMPLETED'}}",
 			"{$group: {_id: null, count:{$sum: 1}}}",
@@ -43,7 +36,4 @@ public interface UserRepository extends MongoRepository<User, String> {
         "{$project: {_id: 0, avgRating: 1}}"
     })
     public Optional<Double> getAverageRatingOfAShow(String title);
-
-    // @Aggregation(pipeline = "[ {$match: {$and: [{'showsWatched.title': 'Breaking Bad'}, {'showsWatched.rating': {$gte: 1}}, {'showsWatched.rating': {$lte: 5}}]}}, {$unwind: '$showsWatched'}, {$group: {_id: null, avgRating: {$avg: '$showsWatched.rating'}}}]")
-    // public Double getAverageRatingOfAShow();
 }
